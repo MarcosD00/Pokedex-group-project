@@ -1,10 +1,20 @@
-
 # import statement for CSRF
+from flask import Flask
 from flask_wtf.csrf import CSRFProtect, generate_csrf
+from flask_migrate import Migrate
 
+import os
+from .config import Configuration
+from .models import db, Pokemon
 
+app = Flask(__name__)
+app.config.from_object(Configuration)
+db.init_app(app)
+migrate = Migrate(app, db)
 
 # after request code for CSRF token injection
+
+
 @app.after_request
 def inject_csrf_token(response):
     response.set_cookie(
@@ -15,3 +25,8 @@ def inject_csrf_token(response):
             'FLASK_ENV') == 'production' else None,
         httponly=True)
     return response
+
+
+@app.route("/", methods=["GET"])
+def index():
+    return "<h1>This is a pokedex</h1>"
