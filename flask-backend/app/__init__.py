@@ -1,5 +1,5 @@
 # import statement for CSRF
-from flask import Flask
+from flask import Flask, render_template, jsonify
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_migrate import Migrate
 from .seed import seed_commands
@@ -29,8 +29,13 @@ def inject_csrf_token(response):
     return response
 
 
-@app.route("/", methods=["GET"])
+@app.route("/api/pokemon", methods=["GET"])
 def index():
-    return "<h1>This is a pokedex</h1>"
+    pokemon = Pokemon.query.all()
+    data = [{'id':poke.id, 'number': poke.number, 'attack':poke.attack, 'defense': poke.defense, 'imageUrl': poke.imageUrl, 'name': poke.name, 'type': poke.type, 'moves': poke.moves, 'encounterRate': poke.encounterRate, 'catchRate': poke.catchRate, 'captured': poke.captured} for poke in pokemon]
+    return jsonify(data)
 
-@app.route
+@app.route('/api/pokemon', methods=['POST'])
+def post_pokemon():
+    form =
+    form['csrf_token'].data = request.cookies['csrf_token']
