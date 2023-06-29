@@ -32,3 +32,5 @@ def inject_csrf_token(response):
 @app.route("/", methods=["GET"])
 def index():
     return "<h1>This is a pokedex</h1>"
+
+@app.route
