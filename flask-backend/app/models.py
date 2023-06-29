@@ -2,6 +2,25 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+types = [
+  "fire",
+  "electric",
+  "normal",
+  "ghost",
+  "psychic",
+  "water",
+  "bug",
+  "dragon",
+  "grass",
+  "fighting",
+  "ice",
+  "flying",
+  "poison",
+  "ground",
+  "rock",
+  "steel",
+]
+
 
 class Pokemon(db.Model):
     __tablename__ = "Pokemons"
@@ -27,10 +46,11 @@ class Item(db.Model):
     name = db.Column(db.String(255), nullable=False)
     price = db.Column(db.Integer, nullable=False)
     pokemonId = db.Column(db.Integer, db.ForeignKey(
-        'pokemon.id'), nullable=False)
+        'Pokemons.id'), nullable=False)
     poke_item = db.relationship("Pokemons", back_populates='item_poke')
 
 
-# class PokemonType(db.Model):
-#     __tablename__ = 'PokemonTypes'
-#     types = db.Column(db.String)
+class PokemonType(db.Model):
+    __tablename__ = 'PokemonTypes'
+    id = db.Column(db.Integer, primary_key=True)
+    types = db.Column(db.String)
